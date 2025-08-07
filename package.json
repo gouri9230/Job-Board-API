@@ -1,0 +1,38 @@
+{
+  "name": "job-board-api",
+  "version": "1.0.0",
+  "description": "job board API",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gouri9230/Job-Board-API.git"
+  },
+  "keywords": [
+    "express",
+    "node.js",
+    "REST",
+    "APIs",
+    "CRUD",
+    "pagination",
+    "role-based",
+    "access"
+  ],
+  "author": "Shrigouri Navaratna",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gouri9230/Job-Board-API/issues"
+  },
+  "homepage": "https://github.com/gouri9230/Job-Board-API#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express-async-handler": "^1.2.0",
+    "mongoose": "^8.17.1",
+    "nodemon": "^3.1.10"
+  }
+}
