@@ -1,9 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const userSchema = require('../models/userModel');
+const {userRegister, userLogin} = require('../controllers/userController');
 
 
-router.get('/jobsboard/register', (req,res)=>{
-    const {username, email, password} = req.params.body;
+router.post('/jobsboard/users/register', userRegister);
 
-})
+router.post('/jobsboard/users/login', userLogin);
+
+router.get('/jobsboard/view/jobslist', (req, res)=> {
+
+});
+
+router.post('/jobsboard/jobs/:id/application', (req,res)=>{
+
+});
