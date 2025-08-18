@@ -7,22 +7,22 @@ const jwt = require('jsonwebtoken');
 // POST /jobsboard/employers/register
 // public
 const employerRegister = asyncHandler (async (req, res)=>{
-    const {username, password, company} = req.body;
-    if (!username || !password || !company) {
+    const {username, email, password, company, role} = req.body;
+    if (!email || !password || !company || !role) {
         res.status(404);
         throw new Error("All inputs are required");
     }
-    const employerAvailable = await Employers.findOne({username});
+    const employerAvailable = await Employers.findOne({company});
     if (employerAvailable) {
         console.log("Employer already registered");
         res.status(401);
         throw new Error("Employer already registered");
     }
-    const hashedPassword = bcrypt.hash(password, 20);
-    const employer = await Employers.create({username, password: hashedPassword, company});
+    const hashedPassword = bcrypt.hash(password, 10);
+    const employer = await Employers.create({username, email, password: hashedPassword, company, role});
     if (employer) {
         console.log("User is registered");
-        res.status(201).json({_id: employer.id, username: employer.name, company: employer.company});
+        res.status(201).json({_id: employer.id, username: employer.name, email: employer.email, company: employer.company, role: employer.role});
     }
     else {
         res.status(401);
@@ -44,7 +44,9 @@ const employerLogin = asyncHandler (async (req, res)=> {
         const accesstoken = jwt.sign({
             employer: {
                 username: employer.username,
+                email: employer.email,
                 company: employer.company,
+                role: employer.role,
                 id: employer.id
             }
         },
@@ -59,4 +61,19 @@ const employerLogin = asyncHandler (async (req, res)=> {
     }
 });
 
-module.exports = {employerRegister, employerLogin}
+// @desc Post job by employer
+// POST /jobsboard/employers/postjob
+// private
+const jobPost = asyncHandler( async (req, res)=>{
+    const {title, job_description, job_id} = req.body;
+    if (!title || !job_description) {
+        res.status(400);
+        throw new Error("Provide Job title and description");
+    }
+    const jobid = await Employers.findOne({job_id});
+    if (jobid) {
+        res.status(401).json({message: "Job with this id already exists"});
+    }
+    const job = await Employers.create({title, job_description, job_id});
+})
+module.exports = {employerRegister, employerLogin,jobPost}

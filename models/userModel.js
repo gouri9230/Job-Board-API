@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const UserSchema = mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     username: {
         type: String,
         required: [true, "Username is mandatory"],
@@ -11,8 +11,12 @@ const UserSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        required:[true],
+        required: true
     },
+    role: {
+        type: String,
+        required: [true, "Please specify a role"]
+    }
 },
 {
     timestamps: true

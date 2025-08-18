@@ -8,8 +8,8 @@ const jwt = require('jsonwebtoken');
 // @access public
 
 const userRegister = asyncHandler (async (req,res)=>{
-    const {username, email, password} = req.body;
-    if(!username || !email || !password) {
+    const {username, email, password, role} = req.body;
+    if(!username || !email || !password || !role) {
         res.status(404);
         throw new Error("All fields are required.")
     }
@@ -18,11 +18,12 @@ const userRegister = asyncHandler (async (req,res)=>{
         res.status(400);
         throw new Error("User with this email address is already registered");
     }
-    const passwordHash = bcrypt.hash(password, 23);
-    const user = await Users.create({username, email, password: passwordHash});
+    const passwordHash = await bcrypt.hash(password, 8);
+    console.log("hashed password is: ", passwordHash);
+    const user = await Users.create({username, email, password: passwordHash, role});
     if(user){
         console.log("User is registered.", user);
-        res.status(201).json({_id:user.id, email: user.email});
+        res.status(201).json({_id:user.id, email: user.email, role: user.role});
     }
     else {
         console.log("User registration failed");
@@ -43,11 +44,13 @@ const userLogin = asyncHandler (async (req, res) => {
     }
     const user = await Users.findOne({username});
     if (user && (await bcrypt.compare(password, user.password))) {
+        // jwt.sign() is the payload that will be sent as 'decoded' when we verify the jwt token
         const accesstoken = jwt.sign({
             user: {
                 username: user.username,
                 email: user.email,
                 id: user.id,
+                role: user.role,
             },
         },
         process.env.SECRET_TOKEN_USER,
@@ -64,5 +67,8 @@ const userLogin = asyncHandler (async (req, res) => {
 // @desc View list of jobs
 // @route GET /jobsboard/view/jobslist
 // @access private
-
-module.exports = {userRegister, userLogin};
+const jobsList = asyncHandler (async (req,res) =>{
+    console.log("inside the page to view jobs");
+    res.status(200).json({message:"i am inside website"});
+})
+module.exports = {userRegister, userLogin, jobsList};

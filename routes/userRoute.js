@@ -1,16 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const {userRegister, userLogin} = require('../controllers/userController');
+const {userRegister, userLogin, jobsList} = require('../controllers/userController');
+const verifyAcessToken = require('../middleware/validateToken');
 
 
-router.post('/jobsboard/users/register', userRegister);
+router.post('/register', userRegister);
 
-router.post('/jobsboard/users/login', userLogin);
+router.post('/login', userLogin);
 
-router.get('/jobsboard/view/jobslist', (req, res)=> {
+router.get('/view/jobslist', verifyAcessToken(process.env.SECRET_TOKEN_USER, 'user'), jobsList);
 
-});
+//router.post('/jobsboard/jobs/:id/application',);
 
-router.post('/jobsboard/jobs/:id/application', (req,res)=>{
-
-});
+module.exports = router;

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { type } = require('os');
 
 const AdminSchema = mongoose.Schema({
     username: {
@@ -12,6 +13,10 @@ const AdminSchema = mongoose.Schema({
     email: {
         type: String,
         required: true
+    },
+    role: {
+        type: String,
+        required: [true, "Please specify a role"]
     }
 },
 {

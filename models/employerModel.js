@@ -3,7 +3,11 @@ const mongoose = require('mongoose');
 const EmployerSchema = mongoose.Schema({
     username: {
         type: String,
-        required: [true, "Username is required"]
+        required: false
+    },
+    email: {
+        type: String,
+        required: [true, "Email is required"]
     },
     password: {
         type: String,
@@ -12,6 +16,10 @@ const EmployerSchema = mongoose.Schema({
     company: {
         type: String,
         required: [true, "Company name has to be specified."]
+    },
+    role: {
+        type: String,
+        required: [true, "Please specify a role"]
     }
 },
 {
