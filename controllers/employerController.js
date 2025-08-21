@@ -12,13 +12,13 @@ const employerRegister = asyncHandler (async (req, res)=>{
         res.status(404);
         throw new Error("All inputs are required");
     }
-    const employerAvailable = await Employers.findOne({company});
+    const employerAvailable = await Employers.findOne({email});
     if (employerAvailable) {
         console.log("Employer already registered");
         res.status(401);
         throw new Error("Employer already registered");
     }
-    const hashedPassword = bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
     const employer = await Employers.create({username, email, password: hashedPassword, company, role});
     if (employer) {
         console.log("User is registered");
@@ -61,19 +61,5 @@ const employerLogin = asyncHandler (async (req, res)=> {
     }
 });
 
-// @desc Post job by employer
-// POST /jobsboard/employers/postjob
-// private
-const jobPost = asyncHandler( async (req, res)=>{
-    const {title, job_description, job_id} = req.body;
-    if (!title || !job_description) {
-        res.status(400);
-        throw new Error("Provide Job title and description");
-    }
-    const jobid = await Employers.findOne({job_id});
-    if (jobid) {
-        res.status(401).json({message: "Job with this id already exists"});
-    }
-    const job = await Employers.create({title, job_description, job_id});
-})
-module.exports = {employerRegister, employerLogin,jobPost}
+
+module.exports = {employerRegister, employerLogin}

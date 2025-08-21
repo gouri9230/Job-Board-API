@@ -3,6 +3,7 @@ const dotenv = require('dotenv').config();
 const connectDB = require('./config/connectionDb');
 const userRouter = require('./routes/userRoute');
 const employerRouter = require('./routes/employerRoute');
+const jobRouter = require('./routes/jobRoute');
 const adminRouter = require('./routes/adminRoute');
 
 const app = express();
@@ -19,4 +20,5 @@ app.get('/', (req, res)=>{
 
 app.use('/jobsboard/users/', userRouter);
 app.use('/jobsboard/employers/', employerRouter);
+app.use('/jobsboard', jobRouter);
 app.use('/jobsboard/admin', adminRouter);

@@ -8,7 +8,6 @@ router.post('/register', employerRegister);
 
 router.post('/login', employerLogin);
 
-router.post('/postjob', verifyAcessToken(process.env.SECRET_TOKEN_EMPLOYER, 'employer'),jobPost);
 //router.get('/jobsboard/jobs/:id/view');
 //router.delete('jobsboard/jobs/:id');
 
